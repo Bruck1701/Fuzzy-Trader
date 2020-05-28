@@ -1,2 +1,2 @@
 # Fuzzy-Trader
-Fuzzy Project
+Fuzzy Trader Project
