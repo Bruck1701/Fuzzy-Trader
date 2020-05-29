@@ -1,0 +1,24 @@
+<%= form_with(model: aquery, local: true) do |form| %> <% if aquery.errors.any?
+%>
+<div id="error_explanation">
+  <h2>
+    <%= pluralize(aquery.errors.count, "error") %> prohibited this aquery from
+    being saved:
+  </h2>
+
+  <ul>
+    <% aquery.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+
+<div class="field">
+  <%= form.label :query_value %> <%= form.text_field :query_value %>
+</div>
+
+<div class="actions">
+  <%= form.submit "Submit"%>
+</div>
+<% end %>

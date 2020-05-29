@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>FuzzyTrader</title>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
+<head>
+  <title>Fuzzy Trader</title>
+  <%= csrf_meta_tags %> <%= csp_meta_tag %>
+  <%= stylesheet_link_tag  'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%=     javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+</head>
 
-  <body>
-    <%= yield %>
-  </body>
+<body>
+  <% flash.each do |key,value| %>
+  <p>
+    <%= value %>
+  </p>
+  <% end %>
+
+  <%= yield %>
+</body>
+
 </html>

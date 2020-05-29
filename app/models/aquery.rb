@@ -1,0 +1,2 @@
+class Aquery < ApplicationRecord
+end

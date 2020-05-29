@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Aqueries</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Query value</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @aqueries.each do |aquery| %>
+      <tr>
+        <td><%= aquery.query_value %></td>
+        <td><%= link_to 'Show', aquery %></td>
+        <td><%= link_to 'Edit', edit_aquery_path(aquery) %></td>
+        <td><%= link_to 'Destroy', aquery, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Aquery', new_aquery_path %>

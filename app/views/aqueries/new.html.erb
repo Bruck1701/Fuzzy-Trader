@@ -1,0 +1,12 @@
+<h1>Welcome</h1>
+
+<p>How much would you like to invest today?</p>
+
+<% if @aquery.query_value==0.0 %>
+<div class="message"> Invalid Input </div>
+<% end %>
+
+
+<%= render 'form', aquery: @aquery %>
+
+<!-- <%= link_to 'Back', aqueries_path %> -->
