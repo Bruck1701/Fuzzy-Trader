@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  aquery_id: 1
+  qrname: MyString
+  qrcategory: MyString
+  qrcurrentvalue: 1.5
+  qrsixhigh: 1.5
+  qrsixlow: 1.5
+  qrrecom: 1
+
+two:
+  aquery_id: 1
+  qrname: MyString
+  qrcategory: MyString
+  qrcurrentvalue: 1.5
+  qrsixhigh: 1.5
+  qrsixlow: 1.5
+  qrrecom: 1
