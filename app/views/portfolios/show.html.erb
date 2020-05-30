@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @portfolio.user_id %>
+</p>
+
+<p>
+  <strong>Totalinv:</strong>
+  <%= @portfolio.totalInv %>
+</p>
+
+<p>
+  <strong>Currentval:</strong>
+  <%= @portfolio.currentVal %>
+</p>
+
+<p>
+  <strong>Cryptoassets:</strong>
+  <%= @portfolio.cryptoAssets %>
+</p>
+
+<p>
+  <strong>Shareassets:</strong>
+  <%= @portfolio.shareAssets %>
+</p>
+
+<p>
+  <strong>Totalassets:</strong>
+  <%= @portfolio.totalAssets %>
+</p>
+
+<%= link_to 'Edit', edit_portfolio_path(@portfolio) %> |
+<%= link_to 'Back', portfolios_path %>

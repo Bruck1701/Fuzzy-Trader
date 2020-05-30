@@ -1,0 +1,93 @@
+<p id="notice"><%= notice %></p>
+<style>
+  table,
+  th,
+  td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+</style>
+
+
+<h1>Portfolio</h1>
+
+Current Value to invest: <%= @aquery.query_value %>
+
+
+<table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Total invested</th>
+      <th>Current value</th>
+      <th>Crypto assets</th>
+      <th>Share assets</th>
+      <th>Total assets</th>
+      <th colspan="5"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @portfolios.each do |portfolio| %>
+    <tr>
+      <td><%= portfolio.user_id %></td>
+      <td><%= portfolio.totalInv %></td>
+      <td><%= portfolio.currentVal %></td>
+      <td><%= portfolio.cryptoAssets %></td>
+      <td><%= portfolio.shareAssets %></td>
+      <td><%= portfolio.totalAssets %></td>
+      <!-- <td><%= link_to 'Show', portfolio %></td>
+      <td><%= link_to 'Edit', edit_portfolio_path(portfolio) %></td>
+      <td><%= link_to 'Destroy', portfolio, method: :delete, data: { confirm: 'Are you sure?' } %></td> -->
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br><br><br>
+
+<div>
+  Available assets to purchase
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Current value </th>
+      <th>Lowest value </th>
+      <th>Average Value </th>
+      <th>Highest value </th>
+      <th>Period in days </th>
+      <th>Recommendation </th>
+
+
+
+      <th colspan="5"></th>
+    </tr>
+  </thead>
+
+
+  <tbody>
+    <% @queryresults.each do |result| %>
+    <tr>
+      <td><%= result.qrname %> </td>
+      <td><%= result.qrcategory %></td>
+      <td><%= result.qrcurrentvalue %></td>
+      <td><%= result.qrlow %></td>
+      <td><%= result.qraverage %></td>
+      <td><%= result.qrhigh %></td>
+      <td><%= result.qravgperiod %></td>
+      <td><%= result.qrrecom %></td>
+
+      <% end %>
+    </tr>
+  </tbody>
+</table>
+
+
+
+<br>
+
+<!-- <%= link_to 'New Portfolio', new_portfolio_path %> -->

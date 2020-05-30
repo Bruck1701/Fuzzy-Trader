@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 1
+  totalInv: 1.5
+  currentVal: 1.5
+  cryptoAssets: 1
+  shareAssets: 1
+  totalAssets: 1
+
+two:
+  user_id: 1
+  totalInv: 1.5
+  currentVal: 1.5
+  cryptoAssets: 1
+  shareAssets: 1
+  totalAssets: 1

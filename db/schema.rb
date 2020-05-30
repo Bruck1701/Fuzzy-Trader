@@ -10,13 +10,42 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_29_093903) do
+ActiveRecord::Schema.define(version: 2020_05_30_094814) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "aqueries", force: :cascade do |t|
     t.float "query_value"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "user_id"
+  end
+
+  create_table "assets", force: :cascade do |t|
+    t.integer "porfolio_id"
+    t.string "category"
+    t.string "name"
+    t.float "qty"
+    t.float "purchaseValue"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "currentvalues", force: :cascade do |t|
+    t.string "name"
+    t.float "value"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "portfolios", force: :cascade do |t|
+    t.integer "user_id"
+    t.float "totalInv"
+    t.float "currentVal"
+    t.integer "cryptoAssets"
+    t.integer "shareAssets"
+    t.integer "totalAssets"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -26,9 +55,18 @@ ActiveRecord::Schema.define(version: 2020_05_29_093903) do
     t.string "qrname"
     t.string "qrcategory"
     t.float "qrcurrentvalue"
-    t.float "qrsixhigh"
-    t.float "qrsixlow"
+    t.float "qrhigh"
+    t.float "qrlow"
     t.integer "qrrecom"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.float "qraverage"
+    t.integer "qravgperiod"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "username"
+    t.string "password"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

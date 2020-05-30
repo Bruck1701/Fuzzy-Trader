@@ -35,6 +35,7 @@ class AqueriesController < ApplicationController
       historicResult["prices"].each do |price|
         values.append(price[1].to_f)
       end
+      period=90
       
     else
       
@@ -42,24 +43,28 @@ class AqueriesController < ApplicationController
         #puts(date)
         values.append(value["4. close"].to_f)
       end
-
+      period=180
     end
   
     maxValue=values.max
     minValue=values.min
+    average = values.sum.to_f/values.size.to_f
     
-    puts(currentValue.class)
-    puts(maxValue.class)
+    
 
     recommendation=0
 
-    if currentValue >= (maxValue*0.8)
+    if currentValue >= (maxValue*0.9)
+      # If the current value is equal or larger than 90% of the highest price of the period, 
+      # it receives a naive negative recommendation
       recommendation = -1    
+    
     elsif currentValue <= (minValue*1.2)
+      # If the current value is smaller than 120% of the lowest prices of the period, it receives a positive recommendation
       recommendation = 1
     end
 
-    return {"qrcurrentvalue" => currentValue,"qrsixhigh"=>maxValue,"qrsixlow"=>minValue, "qrrecom"=>recommendation }
+    return {"qrcurrentvalue" => currentValue,"qrhigh"=>maxValue,"qrlow"=>minValue, "qrrecom"=>recommendation,"qraverage"=>average,"qravgperiod"=>period }
 
   end
 
@@ -91,7 +96,7 @@ class AqueriesController < ApplicationController
   rows=[]
 
   ####  crypto API Calls
-  
+  puts("...Fetching crypto currency quote data")
   requestCrypto= request_api(todayCryptoPriceURL)
   requestCrypto.keys.each do |crypto| 
    
@@ -109,15 +114,16 @@ class AqueriesController < ApplicationController
   end
   
   
-
+  puts("...Fetching company shares quote data")
   companies.each do |company|
+
     request = shareCurrentPriceH+company+shareCurrentPriceT
-    puts(request)
+    
     currentValue = request_api(request)["c"].to_f
     
 
-    puts(currentValue)
-    puts(currentValue.class)
+    #puts(currentValue)
+    #puts(currentValue.class)
     
     historicRequest = historicSharePriceH+company+sharePriceTail
     
@@ -173,7 +179,9 @@ class AqueriesController < ApplicationController
   # POST /aqueries
   # POST /aqueries.json
   def create
+    
     @aquery = Aquery.new(aquery_params)
+    @aquery[:user_id] = 1
     
     if is_number?(@aquery.query_value)
 
@@ -186,20 +194,25 @@ class AqueriesController < ApplicationController
 
       respond_to do |format|
         if @aquery.save
-          format.html { redirect_to @aquery, notice: 'Aquery was successfully created.' }
+
+          query_id= p @aquery.id
+          rows = get_external_data(query_id,@aquery.query_value)
+          #puts(rows[0])
+          
+          rows.each do |entry|
+            @queryresult = Queryresult.new(entry)
+            @queryresult.save
+          end
+
+          format.html { redirect_to :portfolios, notice: 'query successfull.' }
           format.json { render :show, status: :created, location: @aquery }
+        
         else
           format.html { render :new }
           format.json { render json: @aquery.errors, status: :unprocessable_entity }
         end
       end
-      query_id= p @aquery.id
-      rows = get_external_data(query_id,@aquery.query_value)
-      puts(rows[0])
-
-      @queryresult = Queryresult.new(rows[0])
-      @queryresult.save
-
+     
 
     else
       render :new, :notice => "Invalid Number"
@@ -227,7 +240,13 @@ class AqueriesController < ApplicationController
   # # DELETE /aqueries/1
   # # DELETE /aqueries/1.json
   def destroy
+
+    query_id=params[:id]
+    Queryresult.where(:aquery_id =>query_id).destroy_all
+
     @aquery.destroy
+
+
     respond_to do |format|
       format.html { redirect_to aqueries_url, notice: 'Aquery was successfully destroyed.' }
       format.json { head :no_content }
@@ -243,5 +262,9 @@ class AqueriesController < ApplicationController
     # Only allow a list of trusted parameters through.
     def aquery_params
       params.require(:aquery).permit(:query_value)
+
+      #temp fix to associate the query to the user 1
+      #params[:aquery][:user_id] => 1
+
     end
 end
