@@ -1,11 +1,11 @@
 class ApplicationController < ActionController::Base
 
 
-   helper_method :userporfolio
+#    helper_method :userporfolio
 
-   def userportfolio
-        @portfolio = Portfolio.all
-   end
+#    def userportfolio
+#         @portfolio = Portfolio.all
+#    end
 
 
 end

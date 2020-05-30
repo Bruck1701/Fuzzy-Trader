@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Investmentassets</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Porfolio</th>
+      <th>Category</th>
+      <th>Name</th>
+      <th>Qty</th>
+      <th>Purchasevalue</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @investmentassets.each do |investmentasset| %>
+      <tr>
+        <td><%= investmentasset.porfolio_id %></td>
+        <td><%= investmentasset.category %></td>
+        <td><%= investmentasset.name %></td>
+        <td><%= investmentasset.qty %></td>
+        <td><%= investmentasset.purchaseValue %></td>
+        <td><%= link_to 'Show', investmentasset %></td>
+        <td><%= link_to 'Edit', edit_investmentasset_path(investmentasset) %></td>
+        <td><%= link_to 'Destroy', investmentasset, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Investmentasset', new_investmentasset_path %>

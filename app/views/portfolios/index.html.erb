@@ -28,19 +28,17 @@ Current Value to invest: <%= @aquery.query_value %>
   </thead>
 
   <tbody>
-    <% @portfolios.each do |portfolio| %>
+
     <tr>
-      <td><%= portfolio.user_id %></td>
-      <td><%= portfolio.totalInv %></td>
-      <td><%= portfolio.currentVal %></td>
-      <td><%= portfolio.cryptoAssets %></td>
-      <td><%= portfolio.shareAssets %></td>
-      <td><%= portfolio.totalAssets %></td>
-      <!-- <td><%= link_to 'Show', portfolio %></td>
-      <td><%= link_to 'Edit', edit_portfolio_path(portfolio) %></td>
-      <td><%= link_to 'Destroy', portfolio, method: :delete, data: { confirm: 'Are you sure?' } %></td> -->
+      <td><%= @portfolio.user_id %></td>
+      <td><%= @portfolio.totalInv %></td>
+      <td><%= @portfolio.currentVal %></td>
+      <td><%= @portfolio.cryptoAssets %></td>
+      <td><%= @portfolio.shareAssets %></td>
+      <td><%= @portfolio.totalAssets %></td>
+
     </tr>
-    <% end %>
+
   </tbody>
 </table>
 
@@ -70,8 +68,12 @@ Current Value to invest: <%= @aquery.query_value %>
 
 
   <tbody>
-    <% @queryresults.each do |result| %>
+
+
+
+    <% @queryresult.each do |result| %>
     <tr>
+
       <td><%= result.qrname %> </td>
       <td><%= result.qrcategory %></td>
       <td><%= result.qrcurrentvalue %></td>
@@ -82,6 +84,7 @@ Current Value to invest: <%= @aquery.query_value %>
       <td><%= result.qrrecom %></td>
 
       <% end %>
+
     </tr>
   </tbody>
 </table>
@@ -89,5 +92,22 @@ Current Value to invest: <%= @aquery.query_value %>
 
 
 <br>
+
+
+<%= form_for @investmentasset do |f| %>
+
+<p>
+  <%= f.select :name, @queryresult.all.collect {|x| [x.qrname, x.id]},{:include_blank => "Select one" } %>
+  <br>
+</p>
+<p>
+
+  <%= f.label "How much would you like to purchase?" %>
+  <%= f.text_field :qty, :value => @aquery.query_value %>
+  <%= f.submit "Purchase"   %>
+</p>
+
+
+<% end %>
 
 <!-- <%= link_to 'New Portfolio', new_portfolio_path %> -->

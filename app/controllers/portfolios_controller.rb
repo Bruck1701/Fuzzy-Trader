@@ -1,20 +1,15 @@
 class PortfoliosController < ApplicationController
   before_action :set_portfolio, only: [:show, :edit, :update, :destroy]
 
-  # GET /portfolios
-  # GET /portfolios.json
+  
   def index
-    @portfolios = Portfolio.all
-
+    @portfolio = Portfolio.find(1)
     @aquery = Aquery.where(:user_id => 1)[-1]
-
-    #puts(@aquery)
-
+    @investmentasset = Investmentasset.new
     last_id = @aquery.id
     
-    puts(last_id)
-
-    @queryresults = Queryresult.where(:aquery_id=>last_id)    
+    # for crypto currency it always show the options, since you can buy a fraction of crypto
+    @queryresult = Queryresult.where(:aquery_id=>last_id).where(:qrcategory => "cryptoCurrency").or(Queryresult.where(:aquery_id=>last_id).where("qrcurrentvalue <= :qvalue", qvalue: @aquery.query_value))
 
   end
 
@@ -25,7 +20,9 @@ class PortfoliosController < ApplicationController
 
   # GET /portfolios/new
   def new
-    @portfolio = Portfolio.new
+    #@portfolio = Portfolio.new
+    @investmentasset = Investmentasset.new
+    
   end
 
   # GET /portfolios/1/edit
@@ -35,17 +32,20 @@ class PortfoliosController < ApplicationController
   # POST /portfolios
   # POST /portfolios.json
   def create
-    @portfolio = Portfolio.new(portfolio_params)
 
-    respond_to do |format|
-      if @portfolio.save
-        format.html { redirect_to @portfolio, notice: 'Portfolio was successfully created.' }
-        format.json { render :show, status: :created, location: @portfolio }
-      else
-        format.html { render :new }
-        format.json { render json: @portfolio.errors, status: :unprocessable_entity }
-      end
-    end
+    #puts(@asset.name)
+    # @portfolio = Portfolio.new(portfolio_params)
+
+    # respond_to do |format|
+    #   if @portfolio.save
+    #     format.html { redirect_to @portfolio, notice: 'Portfolio was successfully created.' }
+    #     format.json { render :show, status: :created, location: @portfolio }
+    #   else
+    #     format.html { render :new }
+    #     format.json { render json: @portfolio.errors, status: :unprocessable_entity }
+    #   end
+    # end
+
   end
 
   # PATCH/PUT /portfolios/1

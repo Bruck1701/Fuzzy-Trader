@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  porfolio_id: 1
+  category: MyString
+  name: MyString
+  qty: 1.5
+  purchaseValue: 1.5
+
+two:
+  porfolio_id: 1
+  category: MyString
+  name: MyString
+  qty: 1.5
+  purchaseValue: 1.5
