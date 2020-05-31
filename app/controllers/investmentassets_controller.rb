@@ -37,10 +37,12 @@ class InvestmentassetsController < ApplicationController
     # Another backend solution would be necessary to update the CurrentValue from time to time and not only when the client performs a query
 
     assetz = Investmentasset.all
-    assetz.each do |a|
-      newValue = Currentvalue.where(:name =>a.name)[0].value
-      a.totalcurrval = a.qty*newValue
-      a.save
+    if assetz.length >= 1
+      assetz.each do |a|
+        newValue = Currentvalue.where(:name =>a.name)[0].value
+        a.totalcurrval = a.qty * newValue
+        a.save
+      end
     end
 
 
