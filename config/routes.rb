@@ -9,5 +9,5 @@ Rails.application.routes.draw do
   #get '/assets', :to=> 'portfolios#new'
 
 
-  root :to=> 'aqueries#index'
+  root :to=> 'aqueries#new'
 end

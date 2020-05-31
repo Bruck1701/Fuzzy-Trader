@@ -5,7 +5,8 @@ ruby '2.6.3'
 
 gem 'pg'
 gem 'excon'
-gem 'devise'
+gem 'clearance'
+
 
 
 

@@ -11,6 +11,7 @@
 
 <h1>Portfolio</h1>
 
+
 Current Value to invest: <%= @aquery.query_value %>
 
 
@@ -39,6 +40,7 @@ Current Value to invest: <%= @aquery.query_value %>
       <td><%= @portfolio.totalAssets %></td>
       <td><%= @portfolio.checkingacc %></td>
       <td> <%= link_to 'Withdraw Money', @portfolio, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <td> <%= link_to 'Investment Details', :investmentassets  %> </td>
 
     </tr>
 
@@ -46,7 +48,7 @@ Current Value to invest: <%= @aquery.query_value %>
 </table>
 
 <br><br><br>
-
+<%= link_to 'New Query', new_aquery_path %>
 <div>
   Available assets to purchase
 </div>
@@ -112,13 +114,13 @@ Current Value to invest: <%= @aquery.query_value %>
 <%= form_for @investmentasset do |f| %>
 
 <p>
-  <%= f.select :name, @queryresult.all.collect {|x| [x.qrname, x.id]},{:include_blank => "Select one" } %>
+  <%= f.select :name, @queryresult.all.collect {|x| [x.qrname, x.id]},{:include_blank => "Select one" }, :required => 'required'%>
   <br>
 </p>
 <p>
 
   <%= f.label "How much would you like to purchase?" %>
-  <%= f.text_field :qty, :value => @aquery.query_value %>
+  <%= f.text_field :qty, :value => @aquery.query_value, :required => 'required'%>
   <%= f.submit "Purchase"   %>
 </p>
 

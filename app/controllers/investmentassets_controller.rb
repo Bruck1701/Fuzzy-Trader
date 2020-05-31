@@ -1,9 +1,11 @@
 class InvestmentassetsController < ApplicationController
+  before_action :require_login
   before_action :set_investmentasset, only: [:show, :edit, :update, :destroy]
 
  
   def index
-    @investmentassets = Investmentasset.all
+    portfolio = Portfolio.where(:user_id => current_user.id)[0]
+    @investmentassets = Investmentasset.where(:portfolio_id => portfolio.id)
   end
 
  
@@ -27,9 +29,11 @@ class InvestmentassetsController < ApplicationController
     
     queryChoice = investmentasset_params[:name]
     queryresult= Queryresult.find(queryChoice)
-    portfolio_id = queryresult.aquery.user_id
 
-    portfolio = Portfolio.find(portfolio_id)
+    #portfolio_id = queryresult.aquery.user_id
+
+    portfolio = Portfolio.where(:user_id => current_user.id)[0]
+
 
     valueToUse  = investmentasset_params[:qty].to_f
     
@@ -75,7 +79,7 @@ class InvestmentassetsController < ApplicationController
     totalCurrentValue = qty*queryresult.qrcurrentvalue
     
 
-    @investmentasset = Investmentasset.new(:portfolio_id => portfolio_id,
+    @investmentasset = Investmentasset.new(:portfolio_id => portfolio.id,
      :category => queryresult.qrcategory, :name=> queryresult.qrname,
      :purchaseValue => queryresult.qrcurrentvalue,
      :qty => qty, :totalcurrval => totalCurrentValue)
@@ -86,7 +90,8 @@ class InvestmentassetsController < ApplicationController
           format.html { redirect_to @investmentasset, notice: 'Investmentasset was successfully created.' }
           format.json { render :show, status: :created, location: @investmentasset }
 
-          assetz = Investmentasset.all
+
+          assetz = Investmentasset.where(:portfolio_id => portfolio.id)
 
           portfolio.totalInv = portfolio.totalInv + totalCurrentValue
           portfolio.currentVal =  assetz.sum(:totalcurrval)
@@ -107,6 +112,7 @@ class InvestmentassetsController < ApplicationController
 
  
   def destroy
+
     portfolio = Portfolio.find(@investmentasset.portfolio_id)
 
     portfolio.totalInv -= (@investmentasset.qty * @investmentasset.purchaseValue)
@@ -123,7 +129,7 @@ class InvestmentassetsController < ApplicationController
     
     @investmentasset.destroy
     
-    assetz = Investmentasset.all
+    assetz = Investmentasset.where(:portfolio_id => portfolio.id)
     portfolio.currentVal =  assetz.sum(:totalcurrval)
     portfolio.save
 

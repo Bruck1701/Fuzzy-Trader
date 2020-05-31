@@ -3,7 +3,7 @@ class AqueriesController < ApplicationController
 
   
   
-  
+  before_action :require_login
   helper_method :is_number
   before_action :set_aquery, only: [:show, :edit, :update, :destroy]
 
@@ -153,7 +153,7 @@ class AqueriesController < ApplicationController
   # GET /aqueries
   # GET /aqueries.json
   def index
-    @aqueries = Aquery.all
+    @aqueries = Aquery.where(:user_id=>current_user.id)
   end
 
   
@@ -181,7 +181,7 @@ class AqueriesController < ApplicationController
   def create
     
     @aquery = Aquery.new(aquery_params)
-    @aquery[:user_id] = 1
+    @aquery[:user_id] = current_user.id
     
     if is_number?(@aquery.query_value)
 
@@ -204,7 +204,7 @@ class AqueriesController < ApplicationController
             @queryresult.save
           end
 
-          format.html { redirect_to :portfolios, notice: 'query successfull.' }
+          format.html { redirect_to :portfolios, notice: 'query successful.' }
           format.json { render :show, status: :created, location: @aquery }
         
         else
