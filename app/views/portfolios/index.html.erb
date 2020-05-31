@@ -25,6 +25,8 @@ Current Value to invest: <%= @aquery.query_value %>
       <th>Share assets </th>
       <th>Total assets </th>
       <th>Checking Acc </th>
+      <th> Actions </th>
+      <th> Details </th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -39,7 +41,8 @@ Current Value to invest: <%= @aquery.query_value %>
       <td><%= @portfolio.shareAssets %></td>
       <td><%= @portfolio.totalAssets %></td>
       <td><%= @portfolio.checkingacc %></td>
-      <td> <%= link_to 'Withdraw Money', @portfolio, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <td> <%= link_to 'Withdraw Money from Acc', @portfolio, method: :delete, data: { confirm: 'Are you sure?' } %>
+      </td>
       <td> <%= link_to 'Investment Details', :investmentassets  %> </td>
 
     </tr>
