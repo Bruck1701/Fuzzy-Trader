@@ -3,11 +3,34 @@ class PortfoliosController < ApplicationController
 
   
   def index
+
+
+
+    #get the porfolio from the user and the quey result
     @portfolio = Portfolio.find(1)
     @aquery = Aquery.where(:user_id => 1)[-1]
+    
+    #update current value table.
+    Currentvalue.delete_all
+    
+    queryresult = Queryresult.all
+    
+    queryresult.each do |q|
+      currval=Currentvalue.new(:name=>q.qrname,:value=>q.qrcurrentvalue)
+      currval.save
+    end
+    
+    
+
+
+
+    
     @investmentasset = Investmentasset.new
     last_id = @aquery.id
     
+
+
+
     # for crypto currency it always show the options, since you can buy a fraction of crypto
     @queryresult = Queryresult.where(:aquery_id=>last_id).where(:qrcategory => "cryptoCurrency").or(Queryresult.where(:aquery_id=>last_id).where("qrcurrentvalue <= :qvalue", qvalue: @aquery.query_value))
 
@@ -25,51 +48,12 @@ class PortfoliosController < ApplicationController
     
   end
 
-  # GET /portfolios/1/edit
-  def edit
-  end
-
-  # POST /portfolios
-  # POST /portfolios.json
-  def create
-
-    #puts(@asset.name)
-    # @portfolio = Portfolio.new(portfolio_params)
-
-    # respond_to do |format|
-    #   if @portfolio.save
-    #     format.html { redirect_to @portfolio, notice: 'Portfolio was successfully created.' }
-    #     format.json { render :show, status: :created, location: @portfolio }
-    #   else
-    #     format.html { render :new }
-    #     format.json { render json: @portfolio.errors, status: :unprocessable_entity }
-    #   end
-    # end
-
-  end
-
-  # PATCH/PUT /portfolios/1
-  # PATCH/PUT /portfolios/1.json
-  def update
-    respond_to do |format|
-      if @portfolio.update(portfolio_params)
-        format.html { redirect_to @portfolio, notice: 'Portfolio was successfully updated.' }
-        format.json { render :show, status: :ok, location: @portfolio }
-      else
-        format.html { render :edit }
-        format.json { render json: @portfolio.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /portfolios/1
-  # DELETE /portfolios/1.json
+  
   def destroy
-    @portfolio.destroy
-    respond_to do |format|
-      format.html { redirect_to portfolios_url, notice: 'Portfolio was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    @portfolio.checkingacc=0.0
+    @portfolio.save
+    render :show
+    
   end
 
   private

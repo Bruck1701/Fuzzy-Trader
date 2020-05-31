@@ -1,25 +1,25 @@
 class InvestmentassetsController < ApplicationController
   before_action :set_investmentasset, only: [:show, :edit, :update, :destroy]
 
-  # GET /investmentassets
-  # GET /investmentassets.json
+ 
   def index
     @investmentassets = Investmentasset.all
   end
 
-  # GET /investmentassets/1
-  # GET /investmentassets/1.json
+ 
   def show
   end
 
-  # GET /investmentassets/new
+ 
   def new
     @investmentasset = Investmentasset.new
   end
 
-  # GET /investmentassets/1/edit
+ 
   def edit
   end
+
+
 
   # POST /investmentassets
   # POST /investmentassets.json
@@ -27,53 +27,110 @@ class InvestmentassetsController < ApplicationController
     
     queryChoice = investmentasset_params[:name]
     queryresult= Queryresult.find(queryChoice)
-    
     portfolio_id = queryresult.aquery.user_id
-    # calculate the qty
+
+    portfolio = Portfolio.find(portfolio_id)
+
+    valueToUse  = investmentasset_params[:qty].to_f
     
+    # first step is to update the price of all assets with the CurrentValue model, which was updated during the query.
+    # Another backend solution would be necessary to update the CurrentValue from time to time and not only when the client performs a query
+
+    assetz = Investmentasset.all
+    assetz.each do |a|
+      newValue = Currentvalue.where(:name =>a.name)[0].value
+      a.totalcurrval = a.qty*newValue
+      a.save
+    end
+
+
+    # calc how much should go into the the assets and how much is to remain on the checking account.
+    # if the investment is to be made on crypto currency, it invests all the money, since you can purchase a fraction 
+    # of crypto. Else it will purchase the max possible number of shares and deposit the remaining value on 
+    # checking account of the porfolio to be withdrawn
+    portfolioChkAccount =0
+    pcryptoAsts = portfolio.cryptoAssets
+    pshareAsts = portfolio.shareAssets
+
+
+
+
+    if queryresult.qrcategory == "cryptoCurrency"
+      pcryptoAsts += 1
+
+      qty = valueToUse/queryresult.qrcurrentvalue
+    else
+      if valueToUse < queryresult.qrcurrentvalue
+        redirect_to portfolios_path, notice: 'Value not compatible' and return
+      else
+        qty = (valueToUse/queryresult.qrcurrentvalue).to_i
+        portfolioChkAccount = valueToUse % queryresult.qrcurrentvalue
+        pshareAsts +=1
+      end
+
+    end
+
+    totalCurrentValue = qty*queryresult.qrcurrentvalue
     
 
-    @investmentasset = Investmentasset.new(:porfolio_id => portfolio_id,
+    @investmentasset = Investmentasset.new(:portfolio_id => portfolio_id,
      :category => queryresult.qrcategory, :name=> queryresult.qrname,
-     :purchaseValue => queryresult.qrcurrentvalue )
-
-    #@investmentasset = Investmentasset.new(investmentasset_params)
-
+     :purchaseValue => queryresult.qrcurrentvalue,
+     :qty => qty, :totalcurrval => totalCurrentValue)
 
 
-    respond_to do |format|
-      if @investmentasset.save
-        format.html { redirect_to @investmentasset, notice: 'Investmentasset was successfully created.' }
-        format.json { render :show, status: :created, location: @investmentasset }
-      else
-        format.html { render :new }
-        format.json { render json: @investmentasset.errors, status: :unprocessable_entity }
+      respond_to do |format|
+        if @investmentasset.save
+          format.html { redirect_to @investmentasset, notice: 'Investmentasset was successfully created.' }
+          format.json { render :show, status: :created, location: @investmentasset }
+
+          assetz = Investmentasset.all
+
+          portfolio.totalInv = portfolio.totalInv + totalCurrentValue
+          portfolio.currentVal =  assetz.sum(:totalcurrval)
+          portfolio.cryptoAssets = pcryptoAsts
+          portfolio.shareAssets = pshareAsts
+          portfolio.totalAssets = portfolio.totalAssets + 1
+          portfolio.checkingacc = portfolio.checkingacc + portfolioChkAccount
+          portfolio.save
+
+
+        else
+          format.html { render :new }
+          format.json { render json: @investmentasset.errors, status: :unprocessable_entity }
+        end
       end
-    end
   end
 
-  # PATCH/PUT /investmentassets/1
-  # PATCH/PUT /investmentassets/1.json
-  def update
-    respond_to do |format|
-      if @investmentasset.update(investmentasset_params)
-        format.html { redirect_to @investmentasset, notice: 'Investmentasset was successfully updated.' }
-        format.json { render :show, status: :ok, location: @investmentasset }
-      else
-        format.html { render :edit }
-        format.json { render json: @investmentasset.errors, status: :unprocessable_entity }
-      end
-    end
-  end
 
-  # DELETE /investmentassets/1
-  # DELETE /investmentassets/1.json
+ 
   def destroy
+    portfolio = Portfolio.find(@investmentasset.portfolio_id)
+
+    portfolio.totalInv -= (@investmentasset.qty * @investmentasset.purchaseValue)
+
+
+    if @investmentasset.category == 'cryptoCurrency'
+      portfolio.cryptoAssets -=1 
+    else
+      portfolio.shareAssets -=1 
+    end  
+    portfolio.totalAssets -=1
+
+    portfolio.checkingacc = @investmentasset.totalcurrval
+    
     @investmentasset.destroy
+    
+    assetz = Investmentasset.all
+    portfolio.currentVal =  assetz.sum(:totalcurrval)
+    portfolio.save
+
     respond_to do |format|
-      format.html { redirect_to investmentassets_url, notice: 'Investmentasset was successfully destroyed.' }
+      format.html { redirect_to investmentassets_url, notice: 'Asset was succesfully sold.' }
       format.json { head :no_content }
     end
+
+
   end
 
   private

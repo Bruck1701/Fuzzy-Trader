@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_30_140338) do
+ActiveRecord::Schema.define(version: 2020_05_31_104342) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,24 +40,26 @@ ActiveRecord::Schema.define(version: 2020_05_30_140338) do
   end
 
   create_table "investmentassets", force: :cascade do |t|
-    t.integer "porfolio_id"
+    t.integer "portfolio_id"
     t.string "category"
     t.string "name"
     t.float "qty"
     t.float "purchaseValue"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.float "totalcurrval"
   end
 
   create_table "portfolios", force: :cascade do |t|
     t.integer "user_id"
-    t.float "totalInv"
-    t.float "currentVal"
-    t.integer "cryptoAssets"
-    t.integer "shareAssets"
-    t.integer "totalAssets"
+    t.float "totalInv", default: 0.0
+    t.float "currentVal", default: 0.0
+    t.integer "cryptoAssets", default: 0
+    t.integer "shareAssets", default: 0
+    t.integer "totalAssets", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.float "checkingacc", default: 0.0
   end
 
   create_table "queryresults", force: :cascade do |t|
