@@ -40,7 +40,9 @@ class InvestmentassetsController < ApplicationController
     # first step is to update the price of all assets with the CurrentValue model, which was updated during the query.
     # Another backend solution would be necessary to update the CurrentValue from time to time and not only when the client performs a query
 
-    assetz = Investmentasset.all
+    #assetz = Investmentasset.all
+    assetz = Investmentasset.where(:portfolio_id => portfolio.id)
+
     if assetz.length >= 1
       assetz.each do |a|
         newValue = Currentvalue.where(:name =>a.name)[0].value

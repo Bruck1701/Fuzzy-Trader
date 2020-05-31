@@ -15,6 +15,10 @@ class PortfoliosController < ApplicationController
 
     @aquery = Aquery.where(:user_id => current_user.id)[-1]
     
+    if @aquery.nil?
+      redirect_to @portfolio and return
+    end
+
     #update current value table.
     Currentvalue.delete_all
     

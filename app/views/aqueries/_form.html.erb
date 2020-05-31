@@ -14,11 +14,14 @@
 </div>
 <% end %>
 
-<div class="field">
-  <%= form.label :query_value %> <%= form.text_field :query_value %>
+<div class="col-12 col-md-9 mb-2 mb-md-0">
+  <% form.label :query_value %>
+  <%= form.text_field :query_value %>
+</div>
+<br>
+<div class="col-12 col-md-3">
+  <%= form.submit "Submit", class: "btn btn-primary", data: {disable_with: "Processing...".html_safe} %>
 </div>
 
-<div class="actions">
-  <%= form.submit "Submit"%>
-</div>
+
 <% end %>
