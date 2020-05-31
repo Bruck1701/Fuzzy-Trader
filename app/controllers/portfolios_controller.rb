@@ -5,7 +5,6 @@ class PortfoliosController < ApplicationController
   def index
 
 
-
     #get the porfolio from the user and the quey result
     @portfolio = Portfolio.find(1)
     @aquery = Aquery.where(:user_id => 1)[-1]
@@ -21,29 +20,22 @@ class PortfoliosController < ApplicationController
     end
     
     
-
-
-
-    
     @investmentasset = Investmentasset.new
     last_id = @aquery.id
     
-
-
 
     # for crypto currency it always show the options, since you can buy a fraction of crypto
     @queryresult = Queryresult.where(:aquery_id=>last_id).where(:qrcategory => "cryptoCurrency").or(Queryresult.where(:aquery_id=>last_id).where("qrcurrentvalue <= :qvalue", qvalue: @aquery.query_value))
 
   end
 
-  # GET /portfolios/1
-  # GET /portfolios/1.json
+
   def show
   end
 
   # GET /portfolios/new
   def new
-    #@portfolio = Portfolio.new
+    
     @investmentasset = Investmentasset.new
     
   end
