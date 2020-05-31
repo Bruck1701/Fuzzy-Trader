@@ -1,4 +1,5 @@
 class PortfoliosController < ApplicationController
+  before_action :require_login
   before_action :set_portfolio, only: [:show, :edit, :update, :destroy]
 
   
@@ -6,8 +7,13 @@ class PortfoliosController < ApplicationController
 
 
     #get the porfolio from the user and the quey result
-    @portfolio = Portfolio.find(1)
-    @aquery = Aquery.where(:user_id => 1)[-1]
+    
+    
+
+    @portfolio = Portfolio.where(:user_id => current_user.id)[0]
+
+
+    @aquery = Aquery.where(:user_id => current_user.id)[-1]
     
     #update current value table.
     Currentvalue.delete_all
