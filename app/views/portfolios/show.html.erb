@@ -1,34 +1,39 @@
-<p id="notice"><%= notice %></p>
+<table class="table table-bordered">
+  <thead class="thead-dark">
+    <tr>
 
-<p>
-  <strong>User:</strong>
-  <%= @portfolio.user_id %>
-</p>
+      <th scope="col">User</th>
+      <th scope="col">Total invested </th>
+      <th scope="col">Current value </th>
+      <th scope="col">Crypto assets </th>
+      <th scope="col">Share assets </th>
+      <th scope="col">Total assets </th>
+      <th scope="col">Checking Acc </th>
+      <th scope="col"> Actions </th>
+      <th scope="col"> Details </th>
 
-<p>
-  <strong>Totalinv:</strong>
-  <%= @portfolio.totalInv %>
-</p>
+    </tr>
+  </thead>
 
-<p>
-  <strong>Currentval:</strong>
-  <%= @portfolio.currentVal %>
-</p>
+  <tbody>
 
-<p>
-  <strong>Cryptoassets:</strong>
-  <%= @portfolio.cryptoAssets %>
-</p>
+    <tr>
+      <td><%= @portfolio.user_id %></td>
+      <td><%= @portfolio.totalInv.round(2) %></td>
+      <td><%= @portfolio.currentVal.round(2) %></td>
+      <td><%= @portfolio.cryptoAssets %></td>
+      <td><%= @portfolio.shareAssets %></td>
+      <td><%= @portfolio.totalAssets %></td>
+      <td><%= @portfolio.checkingacc.round(2) %></td>
+      <td> <%= link_to 'Withdraw from Acc', @portfolio, method: :delete, data: { confirm: 'Are you sure?' } %>
+      </td>
+      <td> <%= link_to 'Investment Details', :investmentassets  %> </td>
 
-<p>
-  <strong>Shareassets:</strong>
-  <%= @portfolio.shareAssets %>
-</p>
+    </tr>
 
-<p>
-  <strong>Totalassets:</strong>
-  <%= @portfolio.totalAssets %>
-</p>
+  </tbody>
+</table>
 
-<%= link_to 'Edit', edit_portfolio_path(@portfolio) %> |
+<%= link_to 'New query', :root %>
+<br>
 <%= link_to 'Back', portfolios_path %>

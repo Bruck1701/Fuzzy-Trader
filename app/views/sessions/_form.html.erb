@@ -1,0 +1,44 @@
+<%= form_for :session, url: session_path do |form| %>
+
+
+<div class="login-form">
+
+  <div class="form-group">
+    <div class="input-group">
+      <span class="input-group-addon"><i class="fa fa-user"></i></span>
+      <!-- <input type="text" class="form-control" name="username" placeholder="Username" required="required"> -->
+      <%= form.label :email , :class=>"hidden" %>
+      <%= form.text_field :email, type: 'email', :class =>"form-control", :placeholder=>"Email" %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="input-group">
+      <span class="input-group-addon"><i class="fa fa-user"></i></span>
+      <!-- <input type="text" class="form-control" name="username" placeholder="Username" required="required"> -->
+      <%= form.label :password ,:class=>"hidden" %>
+      <%= form.password_field :password ,  :class =>"form-control", :placeholder=>"Password"%>
+    </div>
+  </div>
+
+
+  <div class="row">
+
+    <div class="col-xs-4">
+      <%= form.submit :class =>"btn btn-primary ml-3" %>
+      <% if Clearance.configuration.allow_sign_up? %>
+      <%= link_to t(".sign_up"), sign_up_path, :class =>"btn btn-secondary " %>
+      <% end %>
+    </div>
+  </div>
+
+
+
+
+
+
+</div>
+
+
+
+<% end %>
