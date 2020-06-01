@@ -25,7 +25,7 @@ class PortfoliosController < ApplicationController
 
     #update current value table to get the a new current value of the already bought investments.
     Currentvalue.delete_all
-    # there was a bug here!!!  
+    # there was a bug here!!!  Should only get the current value from the current query and not all queries on DB
     queryresult = Queryresult.where(:aquery_id=>@aquery.id)
     
     queryresult.each do |q|

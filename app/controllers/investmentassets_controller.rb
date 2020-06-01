@@ -127,7 +127,7 @@ class InvestmentassetsController < ApplicationController
           portfolio.shareAssets = pshareAsts
           portfolio.totalAssets = portfolio.totalAssets + 1
 
-          portfolio.checkingacc = portfolioChkAccount
+          portfolio.checkingacc += portfolioChkAccount
           portfolio.save
 
 
