@@ -78,12 +78,12 @@ class AqueriesController < ApplicationController
   
   todaySharePriceURL= "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol="
   historicSharePriceH = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol="
-  sharePriceTail = "&apikey=1NGHI8KCLTGK24F6"
+  sharePriceTail = "&apikey=XXXXXXXXXXXX"
   
   # using other provider of API to get the current closing price
 
   shareCurrentPriceH = "https://finnhub.io/api/v1/quote?symbol="
-  shareCurrentPriceT = "&token=br8m7vvrh5ral083hvm0"
+  shareCurrentPriceT = "&token=XXXXXXXXXXXXX"
   companies = ['AAPL','TSLA','GOOGL','TWTR']
   
       
