@@ -5,20 +5,15 @@ application up and running.
 
 Things you may want to cover:
 
-* Ruby version
+* Rails version: 2.6.3
 
-* System dependencies
+* gems used dependencies: pg, excon, clearance
+* webpack Modules:  Bootstrap, Jquery and Popper
 
 * Configuration
+* Database: PostgreSQL
 
-* Database creation
+* Deployment: Heroku ( https://bk-ftrader.herokuapp.com/ )
 
-* Database initialization
+* APIs Used: 
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
