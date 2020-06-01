@@ -2,15 +2,16 @@
   <div class="other-links">
     <%= link_to t(".sign_in"), sign_in_path %>
   </div>
-  <h2 class="text-center"><%= t(".title") %></h2>
   <div class="jumbotron">
+    <h2 class="text-center"><%= t(".title") %></h2>
+
     <%= form_for @user do |form| %>
     <div class="login-form">
       <%= render partial: '/users/form', object: form %>
     </div>
 
-    <div class="float-right btn btn-primary btn-lg">
-      <%= form.submit %>
+    <div class="float-right">
+      <%= form.submit :class=>"btn btn-primary " %>
     </div>
   </div>
 
