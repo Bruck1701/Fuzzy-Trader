@@ -234,4 +234,8 @@ class AqueriesController < ApplicationController
       #params[:aquery][:user_id] => 1
 
     end
+
+
+
+
 end

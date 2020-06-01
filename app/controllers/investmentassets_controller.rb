@@ -6,6 +6,7 @@ class InvestmentassetsController < ApplicationController
   def index
     portfolio = Portfolio.where(:user_id => current_user.id)[0]
     @investmentassets = Investmentasset.where(:portfolio_id => portfolio.id)
+    @currentvalue = Currentvalue.all
   end
 
  
@@ -43,11 +44,21 @@ class InvestmentassetsController < ApplicationController
     # Another backend solution would be necessary to update the CurrentValue from time to time and not only when the client performs a query
 
     #assetz = Investmentasset.all
-    assetz = Investmentasset.where(:portfolio_id => portfolio.id)
+   
+   # it updates the current price of every user.
+   #  I don't know why  on this part when I use Investmentasset.where() it is not updating.
+    cv=Currentvalue.all
 
+    if cv.length==0
+      redirect_to :root, notice: 'Current Value table is not available! Please perform a query to update it' and return
+    end
+
+    assetz = Investmentasset.all
+   
     if assetz.length >= 1
       assetz.each do |a|
         newValue = Currentvalue.where(:name =>a.name)[0].value
+        puts(newValue)
         a.totalcurrval = a.qty * newValue
         a.save
       end

@@ -20,6 +20,7 @@
       <th scope="col">Name</th>
       <th scope="col">Qty</th>
       <th scope="col">Unit Purchase value</th>
+      <th scope="col">Purchase date</th>
       <th scope="col">Total Current Value </th>
       <th scope="col">Action </th>
 
@@ -27,19 +28,41 @@
   </thead>
 
   <tbody>
-    <% @investmentassets.each do |investmentasset| %>
+    <% @investmentassets.each do |ivas| %>
     <tr>
-      <td><%= investmentasset.portfolio_id %></td>
-      <td><%= investmentasset.category %></td>
-      <td><%= investmentasset.name %></td>
-      <td><%= investmentasset.qty %></td>
-      <td><%= investmentasset.purchaseValue.round(2) %></td>
-      <td><%= investmentasset.totalcurrval.round(2) %> </td>
-      <td><%= link_to 'Sell', investmentasset, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <td><%= ivas.portfolio_id %></td>
+      <td><%= ivas.category %></td>
+      <td><%= ivas.name %></td>
+      <td><%= ivas.qty %></td>
+      <td><%= ivas.purchaseValue.round(2) %></td>
+      <td><%= ivas.created_at.strftime("%FT%T") %></td>
+      <td><%= ivas.totalcurrval.round(2) %> </td>
+      <td><%= link_to 'Sell', ivas, method: :delete, data: { confirm: 'Are you sure?' } %></td>
     </tr>
     <% end %>
   </tbody>
 </table>
+Current Unit prices
+<table class="table table-hover">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Name </th>
+      <th scope="col">Value</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @currentvalue.each do |cv| %>
+    <tr>
+      <td><%= cv.name %></td>
+      <td><%= cv.value %></td>
+
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
 
 <br>
 

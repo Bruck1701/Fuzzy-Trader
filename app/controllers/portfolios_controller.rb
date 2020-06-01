@@ -22,10 +22,10 @@ class PortfoliosController < ApplicationController
 
 
 
-    #update current value table to get the current value of the already bought investments.
+    #update current value table to get the a new current value of the already bought investments.
     Currentvalue.delete_all
-    
-    queryresult = Queryresult.all
+    # there was a bug here!!!  
+    queryresult = Queryresult.where(:aquery_id=>@aquery.id)
     
     queryresult.each do |q|
       currval=Currentvalue.new(:name=>q.qrname,:value=>q.qrcurrentvalue)
