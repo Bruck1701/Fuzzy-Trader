@@ -148,6 +148,11 @@ class AqueriesController < ApplicationController
 
   # GET /aqueries/new
   def new
+    @aqueries = Aquery.where(:user_id=>current_user.id)
+    if @aqueries.length>=1
+      @aqueries.delete_all
+    end
+
     @aquery = Aquery.new
   end
 
@@ -155,8 +160,7 @@ class AqueriesController < ApplicationController
   def edit
   end
 
-  # POST /aqueries
-  # POST /aqueries.json
+
   def create
     
     @aquery = Aquery.new(aquery_params)
@@ -185,6 +189,8 @@ class AqueriesController < ApplicationController
             @queryresult = Queryresult.new(entry)
             @queryresult.save
           end
+
+        
 
           format.html { redirect_to :portfolios, notice: 'query successful.' }
           format.json { render :show, status: :created, location: @aquery }

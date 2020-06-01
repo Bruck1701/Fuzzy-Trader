@@ -12,11 +12,12 @@ class PortfoliosController < ApplicationController
 
     @portfolio = Portfolio.where(:user_id => current_user.id)[0]
     @aquery = Aquery.where(:user_id => current_user.id)[-1]
-    
 
+   
     # in case the person skips the search query and jumps straight to the portfolios page 
     if @aquery.nil?
-      redirect_to @portfolio and return
+      
+      redirect_to @portfolio, :notice=>"You need to perform a query to see investment opportunities" and return
     end
 
 

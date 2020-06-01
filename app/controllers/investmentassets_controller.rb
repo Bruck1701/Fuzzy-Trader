@@ -25,20 +25,28 @@ class InvestmentassetsController < ApplicationController
 
   def create
     
-    queryChoice = investmentasset_params[:name]
-    queryresult= Queryresult.find(queryChoice)
-
-    #portfolio_id = queryresult.aquery.user_id
-
-    portfolio = Portfolio.where(:user_id => current_user.id)[0]
-
-
     valueToUse  = investmentasset_params[:qty].to_f
 
     if valueToUse==0.0
       redirect_to :portfolios, notice: 'Invalid number!' and return 
-
     end
+
+    portfolio = Portfolio.where(:user_id => current_user.id)[0]
+
+    
+
+
+
+    queryChoice = investmentasset_params[:name]
+    queryresult= Queryresult.find(queryChoice)
+   
+
+   
+
+
+    
+
+    
     
     # first step is to update the price of all assets with the CurrentValue model, which was updated during the query.
     # Another backend solution would be necessary to update the CurrentValue from time to time and not only when the client performs a query
@@ -69,7 +77,8 @@ class InvestmentassetsController < ApplicationController
     # if the investment is to be made on crypto currency, it invests all the money, since you can purchase a fraction 
     # of crypto. Else it will purchase the max possible number of shares and deposit the remaining value on 
     # checking account of the porfolio to be withdrawn
-    portfolioChkAccount =0
+    portfolioChkAccount = 0
+
     pcryptoAsts = portfolio.cryptoAssets
     pshareAsts = portfolio.shareAssets
 
@@ -87,7 +96,9 @@ class InvestmentassetsController < ApplicationController
         redirect_to portfolios_path, notice: 'Value not compatible' and return
       else
         qty = (valueToUse/queryresult.qrcurrentvalue).to_i
+
         portfolioChkAccount = valueToUse % queryresult.qrcurrentvalue
+        
         pshareAsts +=1
       end
 
@@ -115,7 +126,8 @@ class InvestmentassetsController < ApplicationController
           portfolio.cryptoAssets = pcryptoAsts
           portfolio.shareAssets = pshareAsts
           portfolio.totalAssets = portfolio.totalAssets + 1
-          portfolio.checkingacc = portfolio.checkingacc + portfolioChkAccount
+
+          portfolio.checkingacc = portfolioChkAccount
           portfolio.save
 
 
