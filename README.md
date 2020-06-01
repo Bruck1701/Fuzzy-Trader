@@ -16,7 +16,7 @@ Coingecko for CryptoCurrency
 AlphaVantage and Finnhub for the quotes on stocks of Google, Twitter, Tesla and Apple.
 
 
-* To Do:
+## To Do:
 
-Improve Front-end. 
-Integrate with a Python Flask API running with LSTM models for each asset to get the prediction for next day. 
+* Improve Front-end. 
+* Integrate with a Python Flask API running with LSTM models for each asset. The idead is to try to a prediction for next day price.
