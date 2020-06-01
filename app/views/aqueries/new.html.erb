@@ -1,11 +1,15 @@
-<h1 class="display-3">Welcome</h1>
-<p>How much would you like to invest today?</p>
+<div class="container">
+    <h1 class="display-3">Welcome!</h1>
+    <div class="row">
+        <h4>How much would you like to invest today?</h4>
+    </div>
+    <br>
+    <% if @aquery.query_value==0.0 %>
+    <div class="message"> Invalid Input </div>
+    <% end %>
 
-<% if @aquery.query_value==0.0 %>
-<div class="message"> Invalid Input </div>
-<% end %>
 
-
-<%= render 'form', aquery: @aquery %>
+    <%= render 'form', aquery: @aquery %>
+</div>
 
 <!-- <%= link_to 'Back', aqueries_path %> -->

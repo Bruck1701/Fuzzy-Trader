@@ -22,9 +22,6 @@ class InvestmentassetsController < ApplicationController
   end
 
 
-
-  # POST /investmentassets
-  # POST /investmentassets.json
   def create
     
     queryChoice = investmentasset_params[:name]
@@ -36,6 +33,11 @@ class InvestmentassetsController < ApplicationController
 
 
     valueToUse  = investmentasset_params[:qty].to_f
+
+    if valueToUse==0.0
+      redirect_to :portfolios, notice: 'Invalid number!' and return 
+
+    end
     
     # first step is to update the price of all assets with the CurrentValue model, which was updated during the query.
     # Another backend solution would be necessary to update the CurrentValue from time to time and not only when the client performs a query
@@ -62,7 +64,9 @@ class InvestmentassetsController < ApplicationController
 
 
 
-
+    # update the portfolio also when an investment asset has been purchased
+    # I originally wanted to create a model that would be automatically updated based on the values of
+    # the investment assets model, but I didn't know how. So I decided to to it by hand to meet the schedule.
     if queryresult.qrcategory == "cryptoCurrency"
       pcryptoAsts += 1
 
@@ -114,9 +118,11 @@ class InvestmentassetsController < ApplicationController
 
  
   def destroy
+    # when an investment asset is "destroyed" sold in this context, the current value of it is deposited back
+    # to the checking account of the portolio so the user can withdraw it later. 
+    # the other fields on the portfolio are also updated.
 
     portfolio = Portfolio.find(@investmentasset.portfolio_id)
-
     portfolio.totalInv -= (@investmentasset.qty * @investmentasset.purchaseValue)
 
 

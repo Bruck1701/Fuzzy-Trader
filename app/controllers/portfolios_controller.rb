@@ -6,20 +6,23 @@ class PortfoliosController < ApplicationController
   def index
 
 
-    #get the porfolio from the user and the quey result
-    
+    #get the porfolio from the user and the very last query result from the user. 
+    #every user has only one portfolio.
     
 
     @portfolio = Portfolio.where(:user_id => current_user.id)[0]
-
-
     @aquery = Aquery.where(:user_id => current_user.id)[-1]
     
+
+    # in case the person skips the search query and jumps straight to the portfolios page 
     if @aquery.nil?
       redirect_to @portfolio and return
     end
 
-    #update current value table.
+
+
+
+    #update current value table to get the current value of the already bought investments.
     Currentvalue.delete_all
     
     queryresult = Queryresult.all
@@ -34,16 +37,17 @@ class PortfoliosController < ApplicationController
     last_id = @aquery.id
     
 
-    # for crypto currency it always show the options, since you can buy a fraction of crypto
+   # for crypto currency it always show the options, since you can buy a fraction of crypto
+   # for the company shares, it only returns as option the ones with smaller value.
+   # although, we store in the database all the results for future research purposes.
     @queryresult = Queryresult.where(:aquery_id=>last_id).where(:qrcategory => "cryptoCurrency").or(Queryresult.where(:aquery_id=>last_id).where("qrcurrentvalue <= :qvalue", qvalue: @aquery.query_value))
 
   end
 
-
   def show
   end
 
-  # GET /portfolios/new
+  
   def new
     
     @investmentasset = Investmentasset.new
@@ -52,6 +56,8 @@ class PortfoliosController < ApplicationController
 
   
   def destroy
+    # this action actually represents a money withdrawal from the portfolio account. The portfolio cannot be destroyed.
+
     @portfolio.checkingacc=0.0
     @portfolio.save
     render :show

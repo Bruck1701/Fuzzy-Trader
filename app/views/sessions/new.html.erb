@@ -1,11 +1,17 @@
 <div id="clearance" class="sign-in">
 
-  <div class="jumbotron">
-    <h1 class="display-4"><%= t(".title") %></h1>
+  <div class="jumbotron vertical-center">
+    <div class="container">
+      <h1 class="display-4">Fuzzy Trader Project</h1>
+      <p> This is a Ruby on Rails project. It is currently under development. </p>
+      <br>
+      <p> Feel free to sign up and explore it. </p>
+      <br>
+      <%= t(".title") %>
+      <hr class="my-4">
 
-    <p class="lead">This is a Fuzzy Trader project. Feel free to sign up and explore it.</p>
-    <hr class="my-4">
-
-    <%= render partial: '/sessions/form' %>
+      <%= render partial: '/sessions/form' %>
+    </div>
   </div>
+  <small>Any questions or comments: <a href=mailto:kummel@gmail.com> Developer </a></small>
 </div>

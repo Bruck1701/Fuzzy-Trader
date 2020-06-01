@@ -1,26 +1,21 @@
 class AqueriesController < ApplicationController
-
-
-  
-  
   before_action :require_login
   helper_method :is_number
   before_action :set_aquery, only: [:show, :edit, :update, :destroy]
 
+
+  #checking if the value inserted by the user is a valid number,
   def is_number? string
     true if Float(string)>0.0 rescue false
   end
 
 
   def request_api(url)
+
     response = Excon.get(url)
-    # puts(response.status)
-    # puts(response.body)
-     if response.status !=200
-      #puts(response)
+    if response.status !=200
       return nil
      end
-
 
     JSON.parse(response.body)
 
@@ -30,7 +25,7 @@ class AqueriesController < ApplicationController
   def process_hist_data(currentValue,historicResult,cryptoBool)
     
     values=[]
-    
+    # JSON Data from crypto API
     if cryptoBool
       historicResult["prices"].each do |price|
         values.append(price[1].to_f)
@@ -38,7 +33,7 @@ class AqueriesController < ApplicationController
       period=90
       
     else
-      
+      #JSON Data from stock market API
       historicResult.each do |date,value|
         #puts(date)
         values.append(value["4. close"].to_f)
@@ -54,8 +49,8 @@ class AqueriesController < ApplicationController
 
     recommendation=0
 
-    if currentValue >= (maxValue*0.9)
-      # If the current value is equal or larger than 90% of the highest price of the period, 
+    if currentValue >= (maxValue*0.95)
+      # If the current value is equal or larger than 95% of the highest price of the period, 
       # it receives a naive negative recommendation
       recommendation = -1    
     
@@ -91,8 +86,7 @@ class AqueriesController < ApplicationController
   shareCurrentPriceT = "&token=br8m7vvrh5ral083hvm0"
   companies = ['AAPL','TSLA','GOOGL','TWTR']
   
-  # qrname: string, qrcategory: string, qrcurrentvalue: float, qrsixhigh: float, qrsixlow: float, qrrecom: integer
-    
+      
   rows=[]
 
   ####  crypto API Calls
@@ -113,29 +107,22 @@ class AqueriesController < ApplicationController
  
   end
   
-  
+  ### 
   puts("...Fetching company shares quote data")
   companies.each do |company|
 
     request = shareCurrentPriceH+company+shareCurrentPriceT
-    
     currentValue = request_api(request)["c"].to_f
-    
-
-    #puts(currentValue)
-    #puts(currentValue.class)
-    
+     
     historicRequest = historicSharePriceH+company+sharePriceTail
-    
     historicResultShare = request_api(historicRequest)["Time Series (Daily)"]
-    #puts(historicResultShare)
-
+ 
     hashValues=process_hist_data(currentValue,historicResultShare,false)
     hashValues["aquery_id"] = query_id
     hashValues["qrname"] = company
     hashValues["qrcategory"] = "companyShare"
 
-    #puts(hashValues)
+    
     rows.append(hashValues)
 
 
@@ -148,19 +135,11 @@ class AqueriesController < ApplicationController
  end 
 
 
-
-
-  # GET /aqueries
-  # GET /aqueries.json
   def index
     @aqueries = Aquery.where(:user_id=>current_user.id)
   end
 
   
-  
-  
-  # GET /aqueries/1
-  # GET /aqueries/1.json
   def show
   end
 
@@ -187,17 +166,20 @@ class AqueriesController < ApplicationController
 
    
 
-    # once we have confirmed that the value is correct, we proceed to get data to queryResult
+     # once we have confirmed that the value is correct, we proceed to get data to queryResult
     
-    #@queryresult = Queryresult.new()
-    # aquery_id: integer, qrname: string, qrcategory: string, qrcurrentvalue: float, qrsixhigh: float, qrsixlow: float, qrrecom: integer
+     
 
       respond_to do |format|
         if @aquery.save
 
           query_id= p @aquery.id
+          begin
           rows = get_external_data(query_id,@aquery.query_value)
-          #puts(rows[0])
+          rescue => e
+            format.html { render :new }
+            format.json { render json: @aquery.errors, notice: 'Oops! There was an error in one of the APIs response. Try again later.' }
+          end
           
           rows.each do |entry|
             @queryresult = Queryresult.new(entry)
@@ -223,22 +205,7 @@ class AqueriesController < ApplicationController
 
   end
 
-  # PATCH/PUT /aqueries/1
-  # PATCH/PUT /aqueries/1.json
-  # def update
-  #   respond_to do |format|
-  #     if @aquery.update(aquery_params)
-  #       format.html { redirect_to @aquery, notice: 'Aquery was successfully updated.' }
-  #       format.json { render :show, status: :ok, location: @aquery }
-  #     else
-  #       format.html { render :edit }
-  #       format.json { render json: @aquery.errors, status: :unprocessable_entity }
-  #     end
-  #   end
-  # end
 
-  # # DELETE /aqueries/1
-  # # DELETE /aqueries/1.json
   def destroy
 
     query_id=params[:id]
