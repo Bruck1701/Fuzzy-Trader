@@ -1,7 +1,7 @@
 # Fuzzy Trader Project
 ## A Ruby on Rails project
 
-* Rails version: 2.6.3
+* Rails version: 6.0.3.1
 
 * gems used dependencies: pg, excon, clearance
 * webpack Modules:  Bootstrap, Jquery and Popper
