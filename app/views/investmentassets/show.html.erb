@@ -1,29 +1,45 @@
 <!-- <p id="notice"><%= notice %></p> -->
 
-<p>
-  <strong>Porfolio:</strong>
-  <%= @investmentasset.portfolio_id %>
-</p>
 
-<p>
-  <strong>Category:</strong>
-  <%= @investmentasset.category %>
-</p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @investmentasset.name %>
-</p>
 
-<p>
-  <strong>Qty:</strong>
-  <%= @investmentasset.qty %>
-</p>
 
-<p>
-  <strong>Purchasevalue:</strong>
-  <%= @investmentasset.purchaseValue %>
-</p>
+<table class="table table-bordered table-sm">
+  <thead class="thead-dark">
+    <tr>
 
-<%= link_to 'Edit', edit_investmentasset_path(@investmentasset) %> |
+      <th scope="col">Data</th>
+      <th scope="col">Value</th>
+
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <tr>
+      <td>Porfolio</td>
+      <td><%= @investmentasset.portfolio_id %></td>
+    </tr>
+    <tr>
+      <td>Category</td>
+      <td><%= @investmentasset.category %></td>
+    </tr>
+    <tr>
+      <td>Name</td>
+      <td><%= @investmentasset.name %></td>
+    </tr>
+    <tr>
+      <td>Quantity</td>
+      <td><%= @investmentasset.qty %></td>
+    </tr>
+
+    <tr>
+      <td>Purchase value</td>
+      <td><%= @investmentasset.purchaseValue %></td>
+    </tr>
+
+  </tbody>
+</table>
+
+
 <%= link_to 'Back', investmentassets_path %>

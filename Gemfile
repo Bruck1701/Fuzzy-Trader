@@ -6,7 +6,7 @@ ruby '2.6.3'
 gem 'pg'
 gem 'excon'
 gem 'clearance'
-
+gem 'figaro'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
